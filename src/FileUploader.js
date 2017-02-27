@@ -30,7 +30,7 @@ var Uploader = {
                 if(e.total>0){
                     e.percent = e.loaded / e.total*100;
                 }
-                options.onLoad(e);
+                options.onLoad(e, options);
             }
         }
         var formData = new FormData();
@@ -40,12 +40,6 @@ var Uploader = {
                 formData.append(i,options.data[i]);
             }
         }
-		if(options.type=="qiniu"){
-            var key = options.qiniu.key || options.qiniu.genKey(options);
-			formData.append("token",options.qiniu.upload_token ? options.qiniu.upload_token : QiniuUtils.Utils.genUploadToken(key,options.qiniu.app));
-			if(options.qiniu.key) formData.append("key",options.qiniu.key);
-			options.filename = "file";
-		}
 		formData.append(options.filename,options.file);
 		
         xhr.onerror = function(e){
@@ -58,18 +52,7 @@ var Uploader = {
                 return options.onError(getError(options,xhr),getBody(xhr));
             }
             options.onEnd(e);
-            if(options.type=="qiniu"){
-                var res = getBody(xhr);
-                var body = {
-                    status: "success",
-                    data: {
-                        image_src: options.qiniu.domain +"/"+ res.key
-                    }
-                };
-                options.onSuccess(body);
-            }else{
-                options.onSuccess(getBody(xhr));
-            }
+            options.onSuccess(getBody(xhr));
         }
     
         xhr.open('post',options.url,true);
@@ -79,13 +62,13 @@ var Uploader = {
 }
 
 module.exports ={
-    uploadFile:function(options){
+    uploadFile:function(options={}){
           options.url = options.url || "/upload";
           options.filename = options.filename || "file";
           options.beforeUpload = options.beforeUpload || function(e){ return true; };
           options.onSuccess = options.onSuccess || function(e){};
           options.onError = options.onError || function(e){};
-          options.onLoad = options.onLoad || function(e){};
+          options.onLoad = options.onLoad || function(e, context){};
           options.onStart = options.onStart || function(e){};
           options.onEnd = options.onEnd || function(e){};
           
@@ -95,7 +78,41 @@ module.exports ={
              Uploader.post(options);
          }
     },
-    uploadFiles:function(options){
-        
+    uploadFiles:function(options={}){
+
+          const files = [];
+
+          options.url = options.url || "/upload";
+          options.filename = options.filename || "file";
+          options.beforeUpload = options.beforeUpload || function(e){ return true; };
+          options.onSuccess = options.onSuccess || function(e){};
+          options.onError = options.onError || function(e){};
+          options.onStart = options.onStart || function(e){};
+          options.onEnd = options.onEnd || function(e){};
+
+         if(options.beforeUpload(options)){
+             options.onStart(options);
+             // 开始上传文件
+             for(let i=0;i<options.files.length;i++) {
+                options.file = options.files[i];
+                options.index = i;
+                files[i] = {
+                    percent: 0,
+                    loaded: 0,
+                    total: 0
+                }
+                Uploader.post({ 
+                    ...options,
+                    onLoad: () => function(e, context){
+                        files[context] = {
+                            percent: context.percent,
+                            loaded: context.loaded,
+                            total: context.total
+                        };
+                        options.onLoad(e, {...context, files})
+                    }
+                });
+             }
+         }
     }
 }

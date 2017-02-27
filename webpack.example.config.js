@@ -32,10 +32,6 @@ module.exports = {
         filename: 'index.html',
         chunks: ['app','vendor'],
         inject: 'body'
-    }),
-    new OpenBrowserPlugin({
-      url: 'http://localhost:8080'
-      //browser: 'chromium-browser' // mac调试时需要注释该行
     })
   ],
   module: {
@@ -48,7 +44,7 @@ module.exports = {
       }
     },{
         test: /\.less$/,
-        loaders: ['style','css','less']
+        loaders: ['style-loader','css-loader','less-loader']
     },{
 		test: /\.(png|jpg|gif)$/,
 		loader: 'url-loader?limit=10000&name=build/[name].[ext]'

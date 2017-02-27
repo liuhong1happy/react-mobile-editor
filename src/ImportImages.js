@@ -17,8 +17,8 @@ class ImportImages extends Component {
 
 ImportImages.defaultProps = {
     sources: [],
-    imgWidth: 120,
-    imgHeight: 120
+    imgWidth: 60,
+    imgHeight: 60
 }
 
 ImportImages.propTypes = {

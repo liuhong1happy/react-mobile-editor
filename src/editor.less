@@ -1,0 +1,71 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+.react-mobile-editor {
+    background-color: #F0F0F0;
+    border: 1px solid #ddd;
+    position: relative;
+    left: 0px;
+    top: 0px;
+    &.fullscreen {
+        min-height: 100%;
+    }
+}
+
+.editor-content {
+    margin: 20px 40px;
+    textarea {
+        width: 100%;
+        border: none;
+        outline: none;
+        resize: none;
+        padding: 0px 10px;
+        background-color: #F0F0F0;
+        box-sizing: border-box;
+        font-size: 12px;
+    }
+    .import-images {
+        padding: 10px 10px;
+        border-bottom: 1px solid #979797;
+        border-top: 1px solid #979797;
+        box-sizing: content-box;
+        img {
+            width: 20%;
+            height: 20%;
+            margin-right: 5%;
+        }
+    }
+}
+
+.insert-image {
+    background-color: #fff;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    #insert-image-file {
+        height: 0px;
+    }
+    label[for=insert-image-file] {
+        text-align: center;
+        width: 100%;
+        height: 60px;
+        display: block;
+        font-size: 2em;
+        padding-bottom: 10px;
+    }
+}
+
+.icon-insert {
+    &:before{
+        content: "";
+        background-image: url(../images/img.png);
+        height: 40px;
+        width: 50px;
+        display: inline-block;
+        position: relative;
+        left: -10px;
+        top: 10px;
+    }
+}
