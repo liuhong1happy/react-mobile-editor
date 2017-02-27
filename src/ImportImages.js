@@ -4,7 +4,7 @@ import upload from '../images/upload.png';
 class ImportImages extends Component {
     render() {
         const { imgWidth, imgHeight, sources} = this.props;
-        const images = sources.contact(upload);
+        const images = sources.concat(upload);
         return (<div className="import-images">
             {
                 images.map((img)=>{

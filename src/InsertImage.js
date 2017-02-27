@@ -1,12 +1,10 @@
 import React, { Component, PropTypes } from 'react';
-import img from '../images/img.png';
+import upload from '../images/img.png';
 
 class InsertImage extends Component {
     render() {
-        const { imgWidth, imgHeight, sources} = this.props;
-        const images = sources.contact(upload);
         return (<div className="insert-image">
-            <img src={img} />
+            <img src={upload}/>
             <span>插入图片</span>
         </div>)
     }
