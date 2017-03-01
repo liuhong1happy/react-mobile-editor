@@ -28,7 +28,7 @@ class ReactMobileEditor extends Component {
                 })
             }
             </div>
-            <InsertImage />
+            <InsertImage uploadResponseHandler={uploadResponseHandler}/>
         </div>)
     }
 }
