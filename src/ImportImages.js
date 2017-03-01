@@ -24,6 +24,9 @@ class ImportImages extends Component {
                     if(source) {
                         const loadedFiles = this.state.loadedFiles;
                         loadedFiles.push(source);
+                        this.setState({
+                            loadedFiles
+                        })
                     }
                 },
                 onEnd: (e) => this.handleEnd(e, fileCount)
